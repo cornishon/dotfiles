@@ -1,0 +1,6 @@
+output * bg /home/adamz/Obrazy/Wallpapers/firewatch_sunset.jpg fill
+font pango:JetBrains Mono 9
+titlebar_padding 4 1
+title_align center
+smart_borders on
+seat * hide_cursor 10000
