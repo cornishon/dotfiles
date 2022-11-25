@@ -40,3 +40,6 @@ lspconfig.sumneko_lua.setup {
         }
     }
 }
+
+lspconfig.fortls.setup {
+}

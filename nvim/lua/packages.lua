@@ -1,6 +1,22 @@
 require("packer").startup(function()
     use "wbthomason/packer.nvim"
 
+    --themes
+    use "rakr/vim-one"
+    use "morhetz/gruvbox"
+    use "drewtempelmeyer/palenight.vim"
+    use "ayu-theme/ayu-vim"
+    use "whatyouhide/vim-gotham"
+
+    --fortran
+    use {
+        "rudrab/vimf90",
+        requires = {
+            "pseewald/fprettify",
+            "SirVer/ultisnips",
+        }
+    }
+
     use "Pocco81/autosave.nvim"
 
     use {

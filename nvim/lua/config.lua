@@ -1,20 +1,30 @@
-local o = vim.opt
-
 vim.cmd [[colorscheme slate]]
-vim.cmd [[highlight Normal ctermbg=111111]]
+vim.o.background = "dark"
+vim.cmd [[highlight Normal ctermbg=111111 ctermfg=LightGrey]]
+vim.cmd [[highlight EndOfBuffer ctermbg=111111 ctermfg=LightGrey]]
 vim.cmd [[highlight MatchParen cterm=bold ctermfg=none ctermbg=none]]
 
-o.tabstop = 4
-o.shiftwidth = 4
-o.autoindent = true
-o.expandtab = true
-o.wrap = false
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.autoindent = true
+vim.o.expandtab = true
+vim.o.wrap = false
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
-o.foldmethod = "expr"
-o.foldlevel = 99
-o.foldexpr = "nvim_treesitter#foldexpr()"
+vim.o.foldmethod = "expr"
+vim.o.foldlevel = 99
+vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 
-o.completeopt = { "menu", "menuone" , "noselect" }
+vim.g.completeopt = { "menu", "menuone" , "noselect" }
 
-o.number = true
-o.relativenumber = true
+vim.o.number = true
+vim.o.relativenumber = true
+
+vim.o.fortran_free_form = 1
+vim.g.fortran_linter = 2
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+    pattern = { "*.sh", "*.bash" },
+    command = "!shellcheck %",
+})

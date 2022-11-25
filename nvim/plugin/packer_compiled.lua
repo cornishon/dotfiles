@@ -90,6 +90,11 @@ _G.packer_plugins = {
     path = "/home/adamz/.local/share/nvim/site/pack/packer/start/autosave.nvim",
     url = "https://github.com/Pocco81/autosave.nvim"
   },
+  ["ayu-vim"] = {
+    loaded = true,
+    path = "/home/adamz/.local/share/nvim/site/pack/packer/start/ayu-vim",
+    url = "https://github.com/ayu-theme/ayu-vim"
+  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "/home/adamz/.local/share/nvim/site/pack/packer/start/cmp-buffer",
@@ -114,6 +119,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/adamz/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
+  },
+  fprettify = {
+    loaded = true,
+    path = "/home/adamz/.local/share/nvim/site/pack/packer/start/fprettify",
+    url = "https://github.com/pseewald/fprettify"
+  },
+  gruvbox = {
+    loaded = true,
+    path = "/home/adamz/.local/share/nvim/site/pack/packer/start/gruvbox",
+    url = "https://github.com/morhetz/gruvbox"
   },
   ["mason-lspconfig.nvim"] = {
     loaded = true,
@@ -160,6 +175,11 @@ _G.packer_plugins = {
     path = "/home/adamz/.local/share/nvim/site/pack/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
   },
+  ["palenight.vim"] = {
+    loaded = true,
+    path = "/home/adamz/.local/share/nvim/site/pack/packer/start/palenight.vim",
+    url = "https://github.com/drewtempelmeyer/palenight.vim"
+  },
   ["plenary.nvim"] = {
     loaded = true,
     path = "/home/adamz/.local/share/nvim/site/pack/packer/start/plenary.nvim",
@@ -174,6 +194,26 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/adamz/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  ultisnips = {
+    loaded = true,
+    path = "/home/adamz/.local/share/nvim/site/pack/packer/start/ultisnips",
+    url = "https://github.com/SirVer/ultisnips"
+  },
+  ["vim-gotham"] = {
+    loaded = true,
+    path = "/home/adamz/.local/share/nvim/site/pack/packer/start/vim-gotham",
+    url = "https://github.com/whatyouhide/vim-gotham"
+  },
+  ["vim-one"] = {
+    loaded = true,
+    path = "/home/adamz/.local/share/nvim/site/pack/packer/start/vim-one",
+    url = "https://github.com/rakr/vim-one"
+  },
+  vimf90 = {
+    loaded = true,
+    path = "/home/adamz/.local/share/nvim/site/pack/packer/start/vimf90",
+    url = "https://github.com/rudrab/vimf90"
   }
 }
 

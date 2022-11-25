@@ -1,4 +1,4 @@
-local configs = require "nvim-treesitter.configs"
+local configs = require("nvim-treesitter.configs")
 
 configs.setup {
     ensure_installed = {
@@ -8,17 +8,18 @@ configs.setup {
         "julia",
         "bash",
         "fish",
-        "fortran",
     },
     highlight = {
         enable = true,
+        disable = {
+            "fortran",
+        },
     },
     indent = {
         enable = true,
     },
     rainbow = {
         enable = true,
-        extended_mode = true,
+        extended_mode = false,
     },
 }
-
