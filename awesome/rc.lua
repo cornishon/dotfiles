@@ -55,8 +55,10 @@ beautiful.init(awful.util.get_configuration_dir() .. "/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 TERMINAL = "alacritty" or "x-terminal-emulator"
+LAUNCHER = "sway-launcher-desktop"
 EDITOR = os.getenv("EDITOR") or "vi" or "nano"
-EDITOR_CMD = TERMINAL .. " -e " .. EDITOR
+EDITOR_CMD = TERMINAL.." -e "..EDITOR
+WALLAPAPER = os.getenv("HOME") .. "/Pictures/Wallpapers/dragon-black.jpg"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -76,7 +78,7 @@ awful.layout.layouts = {
     -- awful.layout.suit.fair.horizontal,
     -- awful.layout.suit.spiral,
     -- awful.layout.suit.spiral.dwindle,
-    -- awful.layout.suit.max,
+    awful.layout.suit.max,
     -- awful.layout.suit.max.fullscreen,
     -- awful.layout.suit.magnifier,
     -- awful.layout.suit.corner.nw,
@@ -128,8 +130,8 @@ menubar.utils.terminal = TERMINAL -- Set the terminal for applications that requ
 local taglist_buttons = gears.table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
     awful.button({ }, 2, function(t)
-        if awful.client.focus then
-            awful.client.focus:move_to_tag(t)
+        if client.focus then
+            client.focus:move_to_tag(t)
         end
     end),
     awful.button({ }, 3, awful.tag.viewtoggle),
@@ -139,7 +141,7 @@ local taglist_buttons = gears.table.join(
 
 local tasklist_buttons = gears.table.join(
     awful.button({ }, 1, function(c)
-        if c == awful.client.focus then
+        if c == client.focus then
             c.minimized = true
         else
             c:emit_signal(
@@ -152,7 +154,7 @@ local tasklist_buttons = gears.table.join(
     awful.button({ }, 2, function(c) c:kill() end),
     awful.button({ }, 3, function() end),
     awful.button({ }, 4, function()
-        awful.client.focus.byidx(1)
+        client.focus.byidx(1)
     end),
     awful.button({ }, 5, function()
         awful.client.focus.byidx(-1)
@@ -164,15 +166,13 @@ local mykeyboardlayout = awful.widget.keyboardlayout()
 local mysystray = wibox.widget.systray()
 mysystray:set_base_size(32)
 
-mytextclock:connect_signal("button::press", function(_, _, _, button)
-    if button == 1 then cw.toggle() end
-end)
-
 local n_tags = 4
 local tags = {}
 for i = 1, n_tags do tags[i] = i end
 
 awful.screen.connect_for_each_screen(function(s)
+    gears.wallpaper.fit(WALLAPAPER, s)
+
     -- Each screen has its own tag table.
     awful.tag(tags, s, awful.layout.layouts[1])
 
@@ -237,15 +237,68 @@ root.buttons(gears.table.join(
 -- }}}
 
 -- {{{ Key bindings
+local function launcher(env, args)
+    local term = TERMINAL .. " --class=launcher -e"
+    env = env or ""
+    args = args or ""
+    awful.spawn.with_shell(
+        table.concat({term, env, LAUNCHER, args}, " ")
+    )
+end
+
 local globalkeys = gears.table.join(
-    awful.key({ }, "XF86AudioRaiseVolume",
-        function() awful.spawn.with_shell("amixer sset Master 5%+") end,
-        { deskription = "volume up", group = "vulume" }
+    awful.key({ MODKEY }, "p",
+        function() launcher() end,
+        { description = "show launcher", group = "launcher" }
+    ),
+    awful.key({ MODKEY }, "q",
+        function() launcher("env PROVIDERS_FILE=power-menu.conf") end,
+        { description = "power-menu", group = "launcher" }
+    ),
+    awful.key({ MODKEY }, "c",
+        function() launcher("env PROVIDERS_FILE=edit-config.conf") end,
+        { description = "power-menu", group = "launcher" }
     ),
 
-    awful.key({ }, "XF86AudioLowerVolume",
-        function() awful.spawn.with_shell("amixer sset Master 5%-") end,
-        { deskription = "volume up", group = "vulume" }
+    -- screenshots
+    awful.key({ }, "Print",
+        function()
+            awful.util.spawn("scrot -e 'mv $f ~/screenshots/ 2>/dev/null'", false)
+        end,
+        { description = "capture the whole screen", group = "screenshot" }
+    ),
+
+    -- Volume Keys
+    awful.key({}, "XF86AudioLowerVolume",
+        function()
+            awful.util.spawn("amixer -q sset Master 5%-", false)
+        end
+    ),
+    awful.key({}, "XF86AudioRaiseVolume",
+        function()
+            awful.util.spawn("amixer -q sset Master 5%+", false)
+        end
+    ),
+    awful.key({}, "XF86AudioMute",
+        function()
+            awful.util.spawn("amixer -q set Master 1+ toggle", false)
+        end
+    ),
+    -- Media Keys
+    awful.key({}, "XF86AudioPlay",
+        function()
+            awful.util.spawn("playerctl play-pause", false)
+        end
+    ),
+    awful.key({}, "XF86AudioNext",
+        function()
+            awful.util.spawn("playerctl next", false)
+        end
+    ),
+    awful.key({}, "XF86AudioPrev",
+        function()
+            awful.util.spawn("playerctl previous", false)
+        end
     ),
 
     awful.key({ MODKEY }, "s",
@@ -307,8 +360,8 @@ local globalkeys = gears.table.join(
     awful.key({ MODKEY }, "Tab",
         function()
             awful.client.focus.history.previous()
-            if awful.client.focus then
-                awful.client.focus:raise()
+            if client.focus then
+                client.focus:raise()
             end
         end,
         { description = "go back", group = "client" }
@@ -401,14 +454,7 @@ local globalkeys = gears.table.join(
             }
         end,
         { description = "lua execute prompt", group = "awesome" }
-	),
-
-    awful.key({ MODKEY }, "p",
-        function()
-            awful.spawn.with_shell("alacritty --class=launcher -e env TERMINAL=alacritty sway-launcher-desktop")
-        end,
-        { description = "show launcher", group = "launcher" }
-    )
+	)
 )
 
 local clientkeys = gears.table.join(
@@ -510,9 +556,9 @@ for i = 1, n_tags do
         awful.key({ MODKEY, "Shift" }, i,
             function()
                 if awful.client.focus then
-                    local tag = awful.client.focus.screen.tags[i]
+                    local tag = client.focus.screen.tags[i]
                     if tag then
-                        awful.client.focus:move_to_tag(tag)
+                        client.focus:move_to_tag(tag)
                     end
                end
             end,
@@ -523,9 +569,9 @@ for i = 1, n_tags do
         awful.key({ MODKEY, "Control", "Shift" }, i,
             function()
                 if awful.client.focus then
-                    local tag = awful.client.focus.screen.tags[i]
+                    local tag = client.focus.screen.tags[i]
                     if tag then
-                        awful.client.focus:toggle_tag(tag)
+                        client.focus:toggle_tag(tag)
                     end
                 end
             end,
@@ -699,8 +745,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- {{{ Autostart
 local commands = {
-    "nitrogen --restore",
-    "xinput set-prop 13 'libinput Natural Scrolling Enabled' 1",
+    "xinput set-prop 14 'libinput Natural Scrolling Enabled' 1",
     "picom",
     "nm-applet",
     "setxkbmap -layout pl -option 'caps:ctrl_modifier'",
