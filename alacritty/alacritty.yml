@@ -27,7 +27,7 @@ window:
   #
   decorations: full
 
-  opacity: 0.9
+  opacity: 1.0
 
   # Values for `startup_mode`:
   #   - Windowed
