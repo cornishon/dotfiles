@@ -2,8 +2,6 @@
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
-local lain = require("lain")
-local markup = lain.util.markup
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -19,6 +17,18 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+
+local ok, lain = pcall(require, "lain")
+if not ok then
+  naughty.notify({
+    preset = naughty.config.presets.critical,
+    title = "Missing library",
+    text = lain,
+  })
+else
+  local markup = lain.util.markup
+end
+
 -- }}}
 
 -- {{{ Error handling
