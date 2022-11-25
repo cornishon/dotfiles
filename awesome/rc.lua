@@ -2,6 +2,8 @@
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
+local lain = require("lain")
+local markup = lain.util.markup
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -50,21 +52,15 @@ end
 -- }}}
 
 -- {{{ Variable definitions
--- Themes define colours, icons, font and wallpapers.
-beautiful.init(awful.util.get_configuration_dir() .. "/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 TERMINAL = "alacritty" or "x-terminal-emulator"
 LAUNCHER = "sway-launcher-desktop"
 EDITOR = os.getenv("EDITOR") or "vi" or "nano"
-EDITOR_CMD = TERMINAL.." -e "..EDITOR
+EDITOR_CMD = TERMINAL .. " -e " .. EDITOR
 WALLAPAPER = os.getenv("HOME") .. "/Pictures/Wallpapers/dragon-black.jpg"
 
--- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
 MODKEY = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
@@ -322,12 +318,12 @@ local globalkeys = gears.table.join(
     ),
 
     awful.key({ MODKEY }, "j",
-        function() awful.client.focus.byidx(-1) end,
+        function() awful.client.focus.byidx(1) end,
         { description = "focus next by index", group = "client" }
     ),
 
     awful.key({ MODKEY }, "k",
-        function() awful.client.focus.byidx(1) end,
+        function() awful.client.focus.byidx(-1) end,
         { description = "focus previous by index", group = "client" }
     ),
 
@@ -338,12 +334,12 @@ local globalkeys = gears.table.join(
 
     -- Layout manipulation
     awful.key({ MODKEY, "Shift" }, "j",
-        function() awful.client.swap.byidx(-1) end,
+        function() awful.client.swap.byidx(1) end,
         { description = "swap with next client by index", group = "client" }
     ),
 
     awful.key({ MODKEY, "Shift" }, "k",
-        function() awful.client.swap.byidx(1) end,
+        function() awful.client.swap.byidx(-1) end,
         { description = "swap with previous client by index", group = "client" }
     ),
 
@@ -748,6 +744,7 @@ local commands = {
     "xinput set-prop 14 'libinput Natural Scrolling Enabled' 1",
     "picom",
     "nm-applet",
+    "unclutter",
     "setxkbmap -layout pl -option 'caps:ctrl_modifier'",
 }
 
