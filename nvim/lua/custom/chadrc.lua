@@ -7,7 +7,19 @@ M.mappings = require "custom.mappings"
 
 M.ui = {
   theme = "jellybeans",
-  transparency = true,
+  transparency = false,
+
+  changed_themes = {
+    jellybeans = {
+      base_16 = {
+        base00 = "#111111",
+      },
+      base_30 = {
+        black = "#111111",
+        darker_black = "#101010",
+      },
+    },
+  },
 }
 
 return M
